@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+    <device id="retina5_5" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21679"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="tne-QT-ifu">
+            <objects>
+                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="Downloader" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fQt-WH-bCw">
+                                <rect key="frame" x="24" y="668" width="366" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="F31-yO-tFF"/>
+                                </constraints>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="filled" title="Save To Camera Roll">
+                                    <fontDescription key="titleFontDescription" type="system" weight="medium" pointSize="19"/>
+                                </buttonConfiguration>
+                                <connections>
+                                    <action selector="saveButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="FDo-fV-IR1"/>
+                                </connections>
+                            </button>
+                            <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" clearsOnBeginEditing="YES" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="NM1-y3-baK">
+                                <rect key="frame" x="24" y="600" width="366" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="Oqv-eO-UIy"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="square.and.arrow.down" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="YOa-ql-qlb">
+                                <rect key="frame" x="24" y="43.999999999999986" width="366" height="241.66666666666669"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="242" id="bBJ-J8-imB"/>
+                                </constraints>
+                            </imageView>
+                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6vx-Ov-2Lp">
+                                <rect key="frame" x="24" y="319.66666666666669" width="366" height="80"/>
+                                <subviews>
+                                    <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="MGI-eO-Lby">
+                                        <rect key="frame" x="0.0" y="68" width="366" height="4"/>
+                                    </progressView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Downloading   0 %" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tWo-Y9-gt2">
+                                        <rect key="frame" x="0.0" y="39" width="143" height="21"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstItem="MGI-eO-Lby" firstAttribute="leading" secondItem="6vx-Ov-2Lp" secondAttribute="leading" id="1ds-w9-VjL"/>
+                                    <constraint firstItem="tWo-Y9-gt2" firstAttribute="leading" secondItem="6vx-Ov-2Lp" secondAttribute="leading" id="EjB-Sd-Xl0"/>
+                                    <constraint firstAttribute="bottom" secondItem="MGI-eO-Lby" secondAttribute="bottom" constant="8" id="N4i-Mp-H9g"/>
+                                    <constraint firstAttribute="height" constant="80" id="XnJ-cF-yFc"/>
+                                    <constraint firstItem="MGI-eO-Lby" firstAttribute="top" secondItem="tWo-Y9-gt2" secondAttribute="bottom" constant="8" symbolic="YES" id="d6b-Er-Wk4"/>
+                                    <constraint firstAttribute="trailing" secondItem="MGI-eO-Lby" secondAttribute="trailing" id="xYa-L5-h68"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="fQt-WH-bCw" firstAttribute="top" secondItem="NM1-y3-baK" secondAttribute="bottom" constant="24" id="0nC-5n-hQk"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="YOa-ql-qlb" secondAttribute="trailing" constant="24" id="1u4-dx-ZTf"/>
+                            <constraint firstItem="NM1-y3-baK" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="24" id="2XE-fO-iF6"/>
+                            <constraint firstItem="YOa-ql-qlb" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="24" id="71n-QA-aOC"/>
+                            <constraint firstItem="6vx-Ov-2Lp" firstAttribute="top" secondItem="YOa-ql-qlb" secondAttribute="bottom" constant="33.5" id="LK3-YR-pkP"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="NM1-y3-baK" secondAttribute="trailing" constant="24" id="Nmw-G5-ie3"/>
+                            <constraint firstItem="fQt-WH-bCw" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="24" id="OAy-Ax-Q8M"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="fQt-WH-bCw" secondAttribute="bottom" constant="24" id="V8L-IO-SBx"/>
+                            <constraint firstItem="YOa-ql-qlb" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="24" id="WIY-og-R6g"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="fQt-WH-bCw" secondAttribute="trailing" constant="24" id="Ygx-lY-HGv"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="6vx-Ov-2Lp" secondAttribute="trailing" constant="24" id="bif-II-J8O"/>
+                            <constraint firstItem="6vx-Ov-2Lp" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="24" id="vdy-Ep-Q1t"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="buttonBottomContraint" destination="V8L-IO-SBx" id="gY0-ed-rTh"/>
+                        <outlet property="downloadImageHeightConstraint" destination="bBJ-J8-imB" id="O7H-wH-Xv0"/>
+                        <outlet property="downloadingLabel" destination="tWo-Y9-gt2" id="yyJ-72-5EH"/>
+                        <outlet property="loadingContainerView" destination="6vx-Ov-2Lp" id="vTT-hi-SeW"/>
+                        <outlet property="progressView" destination="MGI-eO-Lby" id="IP3-hK-7nb"/>
+                        <outlet property="textField" destination="NM1-y3-baK" id="xRY-wf-y0A"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="120" y="-3.1690140845070425"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="square.and.arrow.down" catalog="system" width="121" height="128"/>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>
