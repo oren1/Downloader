@@ -10,24 +10,22 @@ import UIKit
 struct YouTubeResponse: Decodable {
     
     enum CodingKeys: String, CodingKey {
-        case result = "result"
-    }
-    
-    enum ResultCodingKeys: String, CodingKey {
         case url = "url"
+        case error = "error"
     }
     
-    var url: String
+    var url: String?
+    var error: String?
     
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        let result = try container.nestedContainer(keyedBy: ResultCodingKeys.self, forKey: .result)
-        url = try result.decode(String.self, forKey: .url)
+        url = try? container.decode(String.self, forKey: .url)
+        error = try? container.decode(String.self, forKey: .error)
     }
 }
 
 
-class ViewController: UIViewController, URLSessionDownloadDelegate {
+class ViewController: UIViewController {
     @IBOutlet weak var progressView: UIProgressView!
     @IBOutlet weak var downloadingLabel: UILabel!
     @IBOutlet weak var textField: UITextField!
@@ -36,8 +34,16 @@ class ViewController: UIViewController, URLSessionDownloadDelegate {
     private var urlSession: URLSession!
     @IBOutlet weak var buttonBottomContraint: NSLayoutConstraint!
     
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        title = "Downloader"
+        let proButton = createProButton()
+        let proBarButtonItem = UIBarButtonItem(customView: proButton)
+        navigationItem.rightBarButtonItems = [proBarButtonItem]
+        self.navigationItem.setHidesBackButton(true, animated: true)
+
         textField.clearButtonMode = .always
         downloadImageHeightConstraint.constant = view.frame.height * 0.3
         
@@ -45,13 +51,16 @@ class ViewController: UIViewController, URLSessionDownloadDelegate {
         notificationCenter.addObserver(self, selector: #selector(adjustForKeyboard), name: UIResponder.keyboardWillHideNotification, object: nil)
         notificationCenter.addObserver(self, selector: #selector(adjustForKeyboard), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
         
-        textField.placeholder = "Copy paste a youtube url"
+        textField.placeholder = "Paste a youtube url"
         
         urlSession = URLSession(configuration: .default,
                                                  delegate: self,
                                                  delegateQueue: nil)
+
+       
     }
 
+    // MARK: - Actions
     @objc func video(
       _ videoPath: String,
       didFinishSavingWithError error: Error?,
@@ -65,60 +74,7 @@ class ViewController: UIViewController, URLSessionDownloadDelegate {
         }
 
     }
-
-    // MARK: - URLSessionDelegate
-    func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didFinishDownloadingTo location: URL) {
-        print("location = \(location)")
-        let videoName = UUID().uuidString
-        let videoURL = URL(fileURLWithPath: NSTemporaryDirectory())
-            .appendingPathComponent(videoName)
-            .appendingPathExtension("mp4")
-       
-        do {
-            if let videoData = try? Data(contentsOf: location) {
-               try videoData.write(to: videoURL)
-                guard UIVideoAtPathIsCompatibleWithSavedPhotosAlbum(videoURL.relativePath) else { return }
-                UISaveVideoAtPathToSavedPhotosAlbum(videoURL.relativePath, self, #selector(self.video(_:didFinishSavingWithError:contextInfo:)),nil)
-            }
-        } catch {
-            print("error writing: \(error)")
-        }
-        
-        DispatchQueue.main.async { [weak self] in
-            self?.loadingContainerView.isHidden = true
-        }
-
-    }
-    func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didWriteData bytesWritten: Int64, totalBytesWritten: Int64, totalBytesExpectedToWrite: Int64) {
-        DispatchQueue.main.async { [weak self] in
-            let progress = Float(totalBytesWritten) / Float(totalBytesExpectedToWrite)
-            self?.progressView.progress = progress
-            self?.downloadingLabel.text = "Downloaging \(Int(progress * 100)) %"
-            print("total bytes written: \(totalBytesWritten)")
-        }
-    }
     
-    func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
-        DispatchQueue.main.async { [weak self] in
-            if let error = error {
-                self?.showError(message: error.localizedDescription)
-            }
-        }
-    }
-
-    func urlSession(_ session: URLSession, didBecomeInvalidWithError error: Error?) {
-        DispatchQueue.main.async { [weak self] in
-            if let error = error {
-                self?.showError(message: error.localizedDescription)
-            }
-        }
-    }
-
-    
-   
-
-   
-    // MARK: - Actions
     @IBAction func saveButtonTapped(_ sender: Any) {
         view.endEditing(true)
         guard let url = textField.text else {
@@ -135,19 +91,44 @@ class ViewController: UIViewController, URLSessionDownloadDelegate {
             return
         }
         
+        
         // start downloading
         Task {
-            do {
-                loadingContainerView.isHidden = false
-                try await downloadVideo(urlString: url)
-
+            guard let _ = DownloaderProducts.store.userPurchasedProVersion() else {
+                print("amountOfDownloads", UserDataManager.amountOfDownloads)
+                if UserDataManager.amountOfDownloads < 2 {
+                   return await downloadVideo(urlString: url)
+                }
+                
+                return showPurchaseViewController()
             }
-            catch {
-                showError(message: error.localizedDescription)
-            }
+            
+            await downloadVideo(urlString: url)
+            
         }
     }
     
+    // MARK: - Custom Logic
+    @objc func showPurchaseViewController() {
+        let purchaseViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "PurchaseViewController") as! PurchaseViewController
+        
+        if UIDevice.current.userInterfaceIdiom == .phone {
+            purchaseViewController.modalPresentationStyle = .fullScreen
+        }
+        else if UIDevice.current.userInterfaceIdiom == .pad {
+            purchaseViewController.modalPresentationStyle = .formSheet
+        }
+        
+        self.present(purchaseViewController, animated: true)
+    }
+    
+    func showSuccessMessageViewController() {
+        let successMessageViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "SuccessMessageViewController") as! SuccessMessageViewController
+        if UIDevice.current.userInterfaceIdiom == .phone {
+            successMessageViewController.modalPresentationStyle = .fullScreen
+        }
+        self.present(successMessageViewController, animated: true)
+    }
     
     // MARK: - UI
     @objc func adjustForKeyboard(notification: Notification) {
@@ -155,37 +136,69 @@ class ViewController: UIViewController, URLSessionDownloadDelegate {
 
         let keyboardScreenEndFrame = keyboardValue.cgRectValue
         let keyboardViewEndFrame = view.convert(keyboardScreenEndFrame, from: view.window)
+        guard let animationDuration = notification.userInfo?[UIResponder.keyboardAnimationDurationUserInfoKey] as? Double else {return}
 
         if notification.name == UIResponder.keyboardWillHideNotification {
-            self.buttonBottomContraint.constant = 24
+            UIView.animate(withDuration: animationDuration) { [weak self] in
+                self?.buttonBottomContraint.constant = 24
+                self?.view.updateConstraintsIfNeeded()
+                self?.view.layoutIfNeeded()
+            }
+            
         } else {
-            buttonBottomContraint.constant = keyboardViewEndFrame.height - view.safeAreaInsets.bottom + 24
+            UIView.animate(withDuration: animationDuration) { [weak self] in
+                guard let self = self else {return}
+                buttonBottomContraint.constant = keyboardViewEndFrame.height - view.safeAreaInsets.bottom + 24
+                view.updateConstraintsIfNeeded()
+                view.layoutIfNeeded()
+            }
         }
 
     }
-    func downloadVideo(urlString: String) async throws {
-        let endPointUrl = URL(string: "https://videoinfo-ajf6q47xdq-uc.a.run.app/videoinfo")!
-        var request = URLRequest(url: endPointUrl)
-        request.httpMethod = "POST"
-        request.allHTTPHeaderFields = [
-            "Content-Type": "application/json"
-        ]
-        let encodedYoutubeDirectUrl = urlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
-
-        let body = ["url": encodedYoutubeDirectUrl]
-        let bodyData = try? JSONSerialization.data(withJSONObject: body, options: [])
-        request.httpBody = bodyData
-
-        
-        let (data, _) = try await urlSession.data(for: request)
-        
-            let decoder = JSONDecoder()
-            let result = try decoder.decode(YouTubeResponse.self, from: data)
-            print("result = \(result)")
-            let theUrl = ""
-            guard let videoURL = URL(string: result.url) else { return }
+    
+    func createProButton() -> UIButton {
+        let proButton = UIButton(type: .roundedRect)
+        proButton.tintColor = .white
+        proButton.backgroundColor = .systemBlue
+        proButton.setTitle("  Get Pro  ", for: .normal)
+        proButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
+        proButton.addTarget(self, action: #selector(showPurchaseViewController), for: .touchUpInside)
+        proButton.layer.cornerRadius = 10
+        proButton.layer.borderWidth = 0
+        proButton.layer.borderColor = UIColor.lightGray.cgColor
+        return proButton
+    }
+    
+    func downloadVideo(urlString: String) async {
+        do {
+            showLoadingContainer()
+            let videoURlString = try await NetworkManager.shared.getVideoUrl(urlString: urlString)
+            guard let videoURL = URL(string: videoURlString) else { return }
             let task = urlSession.downloadTask(with: videoURL)
             task.resume()
+        }
+        catch VideoInfoError.gettingDownloadableUrl(let description) {
+            showError(message: description)
+            self.hideLoadingContainer()
+        }
+        catch {
+            print(error)
+            showError(message: error.localizedDescription)
+            self.hideLoadingContainer()
+        }
+    }
+    
+    func showLoadingContainer() {
+        loadingContainerView.isHidden = false
+        downloadingLabel.text = "Starting Download"
+        activityIndicator.startAnimating()
+    }
+    
+    func hideLoadingContainer() {
+        loadingContainerView.isHidden = true
+        downloadingLabel.text = ""
+        activityIndicator.stopAnimating()
+        progressView.progress = 0
     }
     
     func showError(message: String) {
@@ -200,5 +213,17 @@ class ViewController: UIViewController, URLSessionDownloadDelegate {
         present(alert, animated: true, completion: nil)
     }
     
+    
+    func showAlert(title: String, message: String) {
+        let alert = UIAlertController(
+          title: title,
+          message: message,
+          preferredStyle: .alert)
+        alert.addAction(UIAlertAction(
+          title: "OK",
+          style: UIAlertAction.Style.cancel,
+          handler: nil))
+        present(alert, animated: true, completion: nil)
+    }
 }
 
