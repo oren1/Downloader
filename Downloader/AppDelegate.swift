@@ -7,6 +7,8 @@
 
 import UIKit
 import FirebaseCore
+import FirebaseInstallations
+
 import GoogleMobileAds
 
 @main
@@ -17,10 +19,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         // Use Firebase library to configure APIs.
-           FirebaseApp.configure()
+            FirebaseApp.configure()
 
            // Initialize the Google Mobile Ads SDK.
-           GADMobileAds.sharedInstance().start(completionHandler: nil)
+            GADMobileAds.sharedInstance().start(completionHandler: nil)
+        
+            Installations.installations().authTokenForcingRefresh(true, completion: { (result, error) in
+              if let error = error {
+                print("Error fetching token: \(error)")
+                return
+              }
+              guard let result = result else { return }
+              print("Installation auth token: \(result.authToken)")
+            })
+        
+            InterstitialAd.manager.loadInterstitialAd()
 
         return true
     }

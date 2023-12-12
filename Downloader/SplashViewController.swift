@@ -36,20 +36,27 @@ class SplashViewController: UIViewController, GADFullScreenContentDelegate {
              */
         }
         
-//        downloadGroup.enter()
-//        getRemoteConfig {
-//            downloadGroup.leave()
-//        }
+        downloadGroup.enter()
+        getRemoteConfig {
+            downloadGroup.leave()
+        }
         
-//        downloadGroup.enter()
-//        loadAppOpenAdIfAppropriate(viewVontroller: self) {
-//            downloadGroup.leave()
-//        }
+        downloadGroup.enter()
+        loadAppOpenAdIfAppropriate(viewVontroller: self) {
+            downloadGroup.leave()
+        }
         
         
         
         downloadGroup.notify(queue: DispatchQueue.main) { [weak self] in
-                self?.pushMainViewController()
+            if let appOpenAd = self?.appOpenAd,
+               let rootViewController = self?.view.window?.rootViewController {
+                appOpenAd.present(fromRootViewController: rootViewController)
+                return
+            }
+            else {
+               self?.pushMainViewController()
+            }
         }
     }
     
@@ -71,7 +78,7 @@ class SplashViewController: UIViewController, GADFullScreenContentDelegate {
         
         var unitId = "ca-app-pub-5159016515859793/8839080524"
         #if DEBUG
-        unitId = "ca-app-pub-3940256099942544/5662855259"
+        unitId = "ca-app-pub-3940256099942544/5575463023"
         #endif
                 
         GADAppOpenAd.load(withAdUnitID: unitId, request: GADRequest(),

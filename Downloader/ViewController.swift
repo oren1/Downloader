@@ -6,6 +6,11 @@
 //
 
 import UIKit
+import FirebaseRemoteConfig
+
+enum BusinessModelType: Int {
+  case limitedExports = 1, onlyAds
+}
 
 struct YouTubeResponse: Decodable {
     
@@ -94,16 +99,31 @@ class ViewController: UIViewController {
         
         // start downloading
         Task {
-            guard let _ = DownloaderProducts.store.userPurchasedProVersion() else {
-                print("amountOfDownloads", UserDataManager.amountOfDownloads)
-                if UserDataManager.amountOfDownloads < 2 {
-                   return await downloadVideo(urlString: url)
-                }
-                
-                return showPurchaseViewController()
-            }
             
-            await downloadVideo(urlString: url)
+            let businessModelType = RemoteConfig.remoteConfig().configValue(forKey: "business_model_type").numberValue.intValue
+            let businessModel = BusinessModelType(rawValue: businessModelType)
+            
+            switch businessModel {
+                case .limitedExports:
+                    guard let _ = DownloaderProducts.store.userPurchasedProVersion() else {
+                        print("amountOfDownloads", UserDataManager.amountOfDownloads)
+                        if UserDataManager.amountOfDownloads < 2 {
+                           return await downloadVideo(urlString: url)
+                        }
+                        
+                        return showPurchaseViewController()
+                    }
+                    
+                    await downloadVideo(urlString: url)
+            case .onlyAds:
+                InterstitialAd.manager.showAd(controller: self) { [weak self] in
+                    Task {
+                        await self?.downloadVideo(urlString: url)
+                    }
+                }
+            default:
+                fatalError("unknown 'business_model_type' type")
+            }
             
         }
     }

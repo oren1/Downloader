@@ -228,6 +228,32 @@
                                     <action selector="backButtonTapped:" destination="sGU-f2-aot" eventType="touchUpInside" id="0YH-As-1cA"/>
                                 </connections>
                             </button>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Skl-Pv-SSB">
+                                <rect key="frame" x="16" y="190.33333333333334" width="382" height="34"/>
+                                <subviews>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="checkmark" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="t2A-t1-9ja">
+                                        <rect key="frame" x="8" y="6.6666666666666483" width="25" height="21"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="25" id="H9P-r3-Ceq"/>
+                                            <constraint firstAttribute="height" constant="25" id="geo-np-RK8"/>
+                                        </constraints>
+                                    </imageView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No Ads" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ghi-kQ-hV7">
+                                        <rect key="frame" x="48.000000000000007" y="3.3333333333333144" width="69.666666666666686" height="27"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="22"/>
+                                        <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstItem="t2A-t1-9ja" firstAttribute="leading" secondItem="Skl-Pv-SSB" secondAttribute="leading" constant="8" id="DXq-fK-uvY"/>
+                                    <constraint firstItem="ghi-kQ-hV7" firstAttribute="centerY" secondItem="Skl-Pv-SSB" secondAttribute="centerY" id="dgA-1p-3gU"/>
+                                    <constraint firstItem="ghi-kQ-hV7" firstAttribute="leading" secondItem="t2A-t1-9ja" secondAttribute="trailing" constant="15" id="fdy-cG-Uu1"/>
+                                    <constraint firstItem="t2A-t1-9ja" firstAttribute="centerY" secondItem="Skl-Pv-SSB" secondAttribute="centerY" id="k70-Ph-jH0"/>
+                                    <constraint firstAttribute="height" constant="34" id="mYz-L1-tQq"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="Kih-TN-Rcr"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -240,8 +266,10 @@
                             <constraint firstItem="cNS-DT-eir" firstAttribute="centerX" secondItem="dzj-PA-9Fx" secondAttribute="centerX" id="8jW-0h-4sw"/>
                             <constraint firstItem="JeZ-tv-W8V" firstAttribute="top" secondItem="56I-2E-TqJ" secondAttribute="bottom" constant="-14" id="Bhs-n8-ojY"/>
                             <constraint firstItem="Kih-TN-Rcr" firstAttribute="trailing" secondItem="cXR-nq-e7V" secondAttribute="trailing" constant="24" id="C0k-Ty-XXu"/>
+                            <constraint firstAttribute="trailing" secondItem="Skl-Pv-SSB" secondAttribute="trailing" constant="16" id="Doj-Lm-gla"/>
                             <constraint firstItem="56I-2E-TqJ" firstAttribute="centerX" secondItem="dzj-PA-9Fx" secondAttribute="centerX" id="E1O-Nt-Ue2"/>
                             <constraint firstItem="HH0-vT-tYG" firstAttribute="leading" secondItem="Kih-TN-Rcr" secondAttribute="leading" constant="24" id="HEK-rw-gaO"/>
+                            <constraint firstItem="Skl-Pv-SSB" firstAttribute="leading" secondItem="Kih-TN-Rcr" secondAttribute="leading" constant="16" id="Kbm-ep-1kh"/>
                             <constraint firstItem="8B6-q7-H91" firstAttribute="leading" secondItem="Kih-TN-Rcr" secondAttribute="leading" constant="24" id="ZP2-lz-INa"/>
                             <constraint firstItem="rC9-9M-zlE" firstAttribute="leading" secondItem="Kih-TN-Rcr" secondAttribute="leading" constant="16" id="aNL-nH-13H"/>
                             <constraint firstItem="cNS-DT-eir" firstAttribute="top" secondItem="N1L-4n-829" secondAttribute="bottom" constant="9" id="bbS-W7-HPl"/>
@@ -253,6 +281,7 @@
                             <constraint firstItem="Kih-TN-Rcr" firstAttribute="trailing" secondItem="HH0-vT-tYG" secondAttribute="trailing" constant="24" id="oNm-oE-Dbd"/>
                             <constraint firstItem="8B6-q7-H91" firstAttribute="top" secondItem="HH0-vT-tYG" secondAttribute="bottom" constant="8" symbolic="YES" id="orN-L5-mEH"/>
                             <constraint firstItem="N1L-4n-829" firstAttribute="top" secondItem="cXR-nq-e7V" secondAttribute="bottom" constant="37" id="puP-2P-8wM"/>
+                            <constraint firstItem="Skl-Pv-SSB" firstAttribute="top" secondItem="Tb4-oB-Cdt" secondAttribute="bottom" constant="16" id="sYc-Sr-9jt"/>
                             <constraint firstItem="JeZ-tv-W8V" firstAttribute="centerX" secondItem="dzj-PA-9Fx" secondAttribute="centerX" id="y9y-mX-zxr"/>
                             <constraint firstItem="rC9-9M-zlE" firstAttribute="top" secondItem="JeZ-tv-W8V" secondAttribute="bottom" constant="45" id="yke-1t-qcZ"/>
                         </constraints>
@@ -331,7 +360,7 @@
         <!--Splash View Controller-->
         <scene sceneID="tct-rQ-paB">
             <objects>
-                <viewController id="ePK-fO-TfV" customClass="SplashViewController" customModule="VideoSpeed" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="ePK-fO-TfV" customClass="SplashViewController" customModule="Downloader" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Q52-bh-Qsw">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
