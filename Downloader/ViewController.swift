@@ -65,6 +65,15 @@ class ViewController: UIViewController {
        
     }
 
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        if let _ = DownloaderProducts.store.userPurchasedProVersion() {
+            navigationItem.rightBarButtonItems?.removeAll()
+        }
+    }
+    
+    
     // MARK: - Actions
     @objc func video(
       _ videoPath: String,
@@ -96,13 +105,13 @@ class ViewController: UIViewController {
             return
         }
         
-        
+
         // start downloading
         Task {
-            
+
             let businessModelType = RemoteConfig.remoteConfig().configValue(forKey: "business_model_type").numberValue.intValue
             let businessModel = BusinessModelType(rawValue: businessModelType)
-            
+
             switch businessModel {
                 case .limitedExports:
                     guard let _ = DownloaderProducts.store.userPurchasedProVersion() else {
@@ -110,10 +119,10 @@ class ViewController: UIViewController {
                         if UserDataManager.amountOfDownloads < 2 {
                            return await downloadVideo(urlString: url)
                         }
-                        
+
                         return showPurchaseViewController()
                     }
-                    
+
                     await downloadVideo(urlString: url)
             case .onlyAds:
                 InterstitialAd.manager.showAd(controller: self) { [weak self] in
@@ -124,7 +133,7 @@ class ViewController: UIViewController {
             default:
                 fatalError("unknown 'business_model_type' type")
             }
-            
+
         }
     }
     

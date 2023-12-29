@@ -8,6 +8,7 @@
 import UIKit
 import FirebaseCore
 import FirebaseInstallations
+import FirebaseRemoteConfig
 
 import GoogleMobileAds
 
@@ -23,7 +24,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
            // Initialize the Google Mobile Ads SDK.
             GADMobileAds.sharedInstance().start(completionHandler: nil)
-        
+
             Installations.installations().authTokenForcingRefresh(true, completion: { (result, error) in
               if let error = error {
                 print("Error fetching token: \(error)")
@@ -33,6 +34,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
               print("Installation auth token: \(result.authToken)")
             })
         
+            RemoteConfig.remoteConfig().setDefaults(fromPlist: "remote_config_defaults")
+
             InterstitialAd.manager.loadInterstitialAd()
 
         return true

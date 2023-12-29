@@ -7,16 +7,21 @@
 
 import UIKit
 import StoreKit
+import FirebaseRemoteConfig
 
 class PurchaseViewController: UIViewController {
 
     var product: SKProduct!
-
+    var productIdentifier: ProductIdentifier!
     
     @IBOutlet weak var priceLabel: UILabel!
     @IBOutlet weak var backButton: UIButton!
     @IBOutlet weak var oneTimeChargeLabel: UILabel!
     var onDismiss: VoidClosure?
+    
+    @IBOutlet weak var unlimitedDownloadsContainer: UIView!
+    @IBOutlet weak var unlimitedDownloadsContainerHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var adsLabel: UILabel!
     
     lazy var loadingView: LoadingView = {
         loadingView = LoadingView()
@@ -25,10 +30,28 @@ class PurchaseViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        let productIdentifier = DownloaderProducts.ProConsumable
+               
+        let businessModelType = RemoteConfig.remoteConfig().configValue(forKey: "business_model_type").numberValue.intValue
+        let businessModel = BusinessModelType(rawValue: businessModelType)
+
+        switch businessModel {
+        case .limitedExports:
+            productIdentifier = DownloaderProducts.proVersion
+            unlimitedDownloadsContainer.isHidden = false
+            unlimitedDownloadsContainerHeightConstraint.constant = 34
+        case .onlyAds:
+            productIdentifier = DownloaderProducts.ProVersionOnlyAds
+            unlimitedDownloadsContainer.isHidden = true
+            unlimitedDownloadsContainerHeightConstraint.constant = 0
+            adsLabel.text = "Remove Ads"
+        default:
+            fatalError()
+        }
+
         product = UserDataManager.main.products.first {$0.productIdentifier == productIdentifier}
         priceLabel.text = product.localizedPrice
         
+        view.layoutIfNeeded()
         
         if UIDevice.current.userInterfaceIdiom == .pad {
             backButton.isHidden = true

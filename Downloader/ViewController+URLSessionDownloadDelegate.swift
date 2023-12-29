@@ -27,7 +27,13 @@ extension ViewController: URLSessionDownloadDelegate {
         do {
             if let videoData = try? Data(contentsOf: location) {
                try videoData.write(to: videoURL)
-                guard UIVideoAtPathIsCompatibleWithSavedPhotosAlbum(videoURL.relativePath) else { return }
+                guard UIVideoAtPathIsCompatibleWithSavedPhotosAlbum(videoURL.relativePath) else {
+                    DispatchQueue.main.async { [weak self] in
+                        self?.showError(message: "Unable to download from this url please try downloading the same video from another url")
+                        self?.hideLoadingContainer()
+                    }
+                    return
+                }
                 UISaveVideoAtPathToSavedPhotosAlbum(videoURL.relativePath, self, #selector(self.video(_:didFinishSavingWithError:contextInfo:)),nil)
                 DispatchQueue.main.async { [weak self] in
                     UserDataManager.amountOfDownloads += 1
@@ -48,7 +54,7 @@ extension ViewController: URLSessionDownloadDelegate {
         DispatchQueue.main.async { [weak self] in
             let progress = Float(totalBytesWritten) / Float(totalBytesExpectedToWrite)
             self?.progressView.progress = progress
-            self?.downloadingLabel.text = "Downloaging \(Int(progress * 100)) %"
+            self?.downloadingLabel.text = "Downloading \(Int(progress * 100)) %"
             print("total bytes written: \(totalBytesWritten)")
         }
     }

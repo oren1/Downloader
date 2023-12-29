@@ -27,9 +27,11 @@ extension Notification.Name {
 class DownloaderProducts {
     
     static let proVersion = "ProVersion.1234"
+    static let ProVersionOnlyAds = "ProVersion.OnlyAds.24"
+
     static let ProConsumable = "ProConsumable"
 
-    private static let productIdentifiers: Set<ProductIdentifier> = [proVersion, ProConsumable]
+    private static let productIdentifiers: Set<ProductIdentifier> = [proVersion, ProVersionOnlyAds, ProConsumable]
     
     static let store = IAPManager(productIds: productIdentifiers)
 

@@ -22,7 +22,7 @@ extension UIViewController {
         loadingView.translatesAutoresizingMaskIntoConstraints = false
 
         let constraints = [
-            loadingView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            loadingView.topAnchor.constraint(equalTo: view.topAnchor),
             loadingView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor),
             loadingView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor),
             loadingView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
