@@ -80,9 +80,9 @@ class SplashViewController: UIViewController, GADFullScreenContentDelegate {
         #if DEBUG
         unitId = "ca-app-pub-3940256099942544/5575463023"
         #endif
-                
-        GADAppOpenAd.load(withAdUnitID: unitId, request: GADRequest(),
-                          orientation: UIInterfaceOrientation.portrait) { [weak self] ad, error in
+              
+        
+        GADAppOpenAd.load(withAdUnitID: unitId, request: GADRequest()) { [weak self] ad, error in
             if let error = error {
                 self?.error = error
                 completion()
@@ -94,7 +94,6 @@ class SplashViewController: UIViewController, GADFullScreenContentDelegate {
             self?.appOpenAd?.fullScreenContentDelegate = self
             
             completion()
-            
         }
     }
 
