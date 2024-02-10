@@ -206,6 +206,7 @@ PLATFORMS
   x86_64-darwin-20
 
 DEPENDENCIES
+  dotenv
   fastlane
 
 BUNDLED WITH

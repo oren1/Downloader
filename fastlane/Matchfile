@@ -1,0 +1,18 @@
+URL = ENV['GIT_CERTS_URL']
+STORAGE_MODE = ENV['STORAGE_MODE']
+APP_IDENTIFIER = ENV['APP_IDENTIFIER']
+USERNAME = ENV["USERNAME"]
+
+git_url(URL)
+
+storage_mode(STORAGE_MODE)
+
+# type("development") # The default type, can be: appstore, adhoc, enterprise or development
+
+app_identifier([APP_IDENTIFIER])
+username(USERNAME) # Your Apple Developer Portal username
+
+# For all available options run `fastlane match --help`
+# Remove the # in the beginning of the line to enable the other options
+
+# The docs are available on https://docs.fastlane.tools/actions/match
