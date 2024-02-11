@@ -1,0 +1,18 @@
+name: build-and-upload-to-appstore
+run-name: ${{ github.actor }} is uploading to Appstore Connect
+on: 
+  push:
+      branches:
+          -main
+jobs:
+  archive:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.3' # Not needed with a .ruby-version file
+          # bundler-cache: true # runs 'bundle install' and caches installed gems automatically
+      - run: gem install bundler
+      - run: bundle install
+      - run: bundle exec fastlane release
