@@ -1,9 +1,18 @@
 name: build-and-upload-to-appstore
 run-name: ${{ github.actor }} is uploading to Appstore Connect
-on: [push]
+on: [push, workflow_dispatch]
 jobs:
   archive:
     runs-on: macos-latest
+    env:
+      STORAGE_MODE: ${{ secrets.STORAGE_MODE }}
+      APP_IDENTIFIER: ${{ secrets.APP_IDENTIFIER }}
+      USERNAME: ${{ secrets.USERNAME }}
+      GIT_CERTS_URL: ${{ secrets.GIT_CERTS_URL }}
+      KEY_ID: ${{ secrets.KEY_ID }}
+      ISSUER_ID: ${{ secrets.ISSUER_ID }}
+      KEY_CONTENT: ${{ secrets.KEY_CONTENT }}
+
     steps:
       - uses: actions/checkout@v4
       - uses: ruby/setup-ruby@v1

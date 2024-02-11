@@ -15,9 +15,9 @@
 
 default_platform(:ios)
 
-# KEY_ID = ENV["KEY_ID"]
-# ISSUER_ID = ENV["ISSUER_ID"]
-# KEY_CNONTENT = ENV["KEY_CONTENT"]
+KEY_ID = ENV["KEY_ID"]
+ISSUER_ID = ENV["ISSUER_ID"]
+KEY_CNONTENT = ENV["KEY_CONTENT"]
 
 platform :ios do
   desc "Push a new release build to the App Store"
