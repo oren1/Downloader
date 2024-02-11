@@ -1,6 +1,6 @@
 name: build-and-upload-to-appstore
 run-name: ${{ github.actor }} is uploading to Appstore Connect
-on: [push]
+on: [push, workflow_dispatch]
 jobs:
   archive:
     runs-on: macos-latest
