@@ -24,8 +24,8 @@ jobs:
       - run: gem install bundler
       - run: bundle install
       - uses: webfactory/ssh-agent@v0.9.0
-          with:
-            ssh-private-key: ${{ secrets.PRIVATE_KEY }}
+        with:
+          ssh-private-key: ${{ secrets.PRIVATE_KEY }}
       # - run: echo PRIVATE_KEY > private_key
       # - run: chmod 600 private_key
       # - run: ssh-add private_key
