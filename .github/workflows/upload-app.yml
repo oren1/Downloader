@@ -24,5 +24,6 @@ jobs:
       - run: gem install bundler
       - run: bundle install
       - run: echo PRIVATE_KEY > private_key
+      - run: chmod 444 private_key
       - run: ssh-add private_key
       - run: bundle exec fastlane release
