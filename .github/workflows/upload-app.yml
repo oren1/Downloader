@@ -23,4 +23,5 @@ jobs:
           # bundler-cache: true # runs 'bundle install' and caches installed gems automatically
       - run: gem install bundler
       - run: bundle install
+      - run: ssh-add PRIVATE_KEY
       - run: bundle exec fastlane release
