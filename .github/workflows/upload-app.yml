@@ -12,6 +12,7 @@ jobs:
       KEY_ID: ${{ secrets.KEY_ID }}
       ISSUER_ID: ${{ secrets.ISSUER_ID }}
       KEY_CONTENT: ${{ secrets.KEY_CONTENT }}
+      GIT_BASE_64_KEY: ${{ secrets.GIT_BASE_64_KEY }}
 
     steps:
       - uses: actions/checkout@v4
