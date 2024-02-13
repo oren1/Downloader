@@ -177,9 +177,9 @@ class ViewController: UIViewController {
         } else {
             UIView.animate(withDuration: animationDuration) { [weak self] in
                 guard let self = self else {return}
-                buttonBottomContraint.constant = keyboardViewEndFrame.height - view.safeAreaInsets.bottom + 24
-                view.updateConstraintsIfNeeded()
-                view.layoutIfNeeded()
+                self.buttonBottomContraint.constant = keyboardViewEndFrame.height - view.safeAreaInsets.bottom + 24
+                self.view.updateConstraintsIfNeeded()
+                self.view.layoutIfNeeded()
             }
         }
 
