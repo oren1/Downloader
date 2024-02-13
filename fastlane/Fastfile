@@ -24,6 +24,7 @@ PRIVATE_KEY = ENV["PRIVATE_KEY"]
 platform :ios do
   desc "Push a new release build to the App Store"
   lane :release do
+    xcversion(version: "15.1")
     sync_code_signing(type: "appstore", readonly: true, git_basic_authorization: GIT_BASE_64_KEY) # alias for "match". "sync_code_signing" = "match"
     increment_build_number(xcodeproj: "Downloader.xcodeproj")
     build_app(workspace: "Downloader.xcworkspace", scheme: "Downloader")
