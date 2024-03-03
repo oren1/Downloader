@@ -13,19 +13,21 @@ typealias VoidClosure = () -> ()
 class AppOpenAd: NSObject, GADFullScreenContentDelegate {
     
     var minimumAppOpensRequiredToShowAd: Int
+    var userDefaults = UserDefaults.standard
 
     static let manager = AppOpenAd()
 
+    
     override init() {
         minimumAppOpensRequiredToShowAd = RemoteConfig.remoteConfig().configValue(forKey: "minimumAppOpensToShowAd").numberValue.intValue
     }
     
     var amountOfAppOpens: Int {
         set {
-            UserDefaults.standard.set(newValue, forKey: "amountOfAppOpens")
+            userDefaults.set(newValue, forKey: "amountOfAppOpens")
         }
         get {
-            UserDefaults.standard.integer(forKey: "amountOfAppOpens")
+            userDefaults.integer(forKey: "amountOfAppOpens")
         }
     }
     

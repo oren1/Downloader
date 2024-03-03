@@ -33,23 +33,25 @@ class DownloaderProducts {
 
     private static let productIdentifiers: Set<ProductIdentifier> = [proVersion, ProVersionOnlyAds, ProConsumable]
     
-    static let store = IAPManager(productIds: productIdentifiers)
+    static let store = IAPManager(productIds: productIdentifiers, userDefaults: UserDefaults.standard)
 
 }
 
 
 class IAPManager: NSObject {
     
+    
         private let productIdentifiers: Set<ProductIdentifier>
         private var purchasedProductIdentifiers: Set<ProductIdentifier> = []
         private var productsRequest: SKProductsRequest?
         private var productsRequestCompletionHandler: ProductsRequestCompletionHandler?
+        var userDefaults: UserDefaults
 
-    
-        public init(productIds: Set<ProductIdentifier>) {
+        public init(productIds: Set<ProductIdentifier>, userDefaults: UserDefaults) {
+          self.userDefaults = userDefaults
           productIdentifiers = productIds
           for productIdentifier in productIds {
-            let purchased = UserDefaults.standard.bool(forKey: productIdentifier)
+            let purchased = self.userDefaults.bool(forKey: productIdentifier)
             if purchased {
               purchasedProductIdentifiers.insert(productIdentifier)
               print("Previously purchased: \(productIdentifier)")

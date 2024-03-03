@@ -36,7 +36,6 @@ class InterstitialAd: NSObject {
                 print("Ad loaded successfully")
                 self?.interstitial = ad
                 self?.interstitial?.fullScreenContentDelegate = self
-
             }
         }
 

@@ -2931,7 +2931,7 @@ Copyright 2022 Google
 
 ## GoogleUserMessagingPlatform
 
-Copyright 2023 Google
+Copyright 2024 Google LLC
 
 ## GoogleUtilities
 
