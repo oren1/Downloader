@@ -21,6 +21,9 @@ jobs:
         with:
           ruby-version: '3.3' # Not needed with a .ruby-version file
           # bundler-cache: true # runs 'bundle install' and caches installed gems automatically
+      - uses: futureware-tech/simulator-action@v3
+        with:
+          model: 'iPhone 15'    
       - run: gem install bundler
       - run: gem install cocoapods
       - run: bundle install
